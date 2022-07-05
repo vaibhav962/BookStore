@@ -17,7 +17,7 @@ namespace BookStore.Api.Controllers
         {
             User user = _repository.Login(model);
             if (user == null)
-                return NotFound();
+                return BadRequest();
 
             UserModel userModel = new UserModel(user);
             return Ok(userModel);

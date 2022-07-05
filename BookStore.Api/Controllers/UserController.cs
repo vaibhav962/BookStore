@@ -27,6 +27,20 @@ namespace BookStore.Api.Controllers
         }
 
         [HttpGet]
+        [Route("Roles")]
+        public IActionResult GetRoles(int pageIndex = 1, int pageSize = 10, string keyword = "")
+        {
+            var roles = _repository.GetRoles(pageIndex, pageSize, keyword);
+            ListResponse<RoleModel> listResponse = new ListResponse<RoleModel>()
+            {
+                Results = roles.Results.Select(c => new RoleModel(c)),
+                TotalRecords = roles.TotalRecords,
+            };
+
+            return Ok(listResponse);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public IActionResult GetUser(int id)
         {
