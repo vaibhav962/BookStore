@@ -1,4 +1,5 @@
-﻿using BookStore.Models.ViewModels;
+﻿using BookStore.Models.Models;
+using BookStore.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,19 @@ namespace BookStore.Repository
             keyword = keyword?.ToLower()?.Trim();
             var query = _context.Carts.Include(c => c.Book).Where(c => keyword == null || c.Book.Name.ToLower().Contains(keyword)).AsQueryable();
             return query.ToList();
+        }
+
+        public ListResponse<Cart> GetCartListAll(int UserId)
+        {
+            var query = _context.Carts.Include(c => c.Book).Where(c => c.Userid == UserId).AsQueryable();
+            int totalRecords = query.Count();
+            List<Cart> carts = query.ToList();
+
+            return new ListResponse<Cart>()
+            {
+                Results = carts,
+                TotalRecords = totalRecords,
+            };
         }
 
         public Cart GetCarts(int id)

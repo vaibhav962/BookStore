@@ -12,15 +12,15 @@ namespace BookStore.Models.Models
             UserId = cart.Userid;
             BookId = cart.Bookid;
             Quantity = cart.Quantity;
-            //BookName = cart.Book.Name;
-            //Price = cart.Book.Price;
+            BookName = cart.Book.Name;
+            Price = cart.Book.Price;
         }
 
         public int Id { get; set; }
         public int UserId { get; set; }
         public int BookId { get; set; }
         public int Quantity { get; set; }
-        //public string BookName { get; set; }
-        //public decimal Price { get; set; }
+        public string BookName { get; set; }
+        public decimal Price { get; set; }
     }
 }

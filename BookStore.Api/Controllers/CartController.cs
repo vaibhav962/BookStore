@@ -8,7 +8,7 @@ using System.Linq;
 namespace BookStore.Api.Controllers
 {
     [ApiController]
-    [Route("cart")]
+    [Route("api/cart")]
     public class CartController : Controller
     {
         private readonly CartRepository _cartRepository = new CartRepository();
@@ -20,6 +20,19 @@ namespace BookStore.Api.Controllers
             List<Cart> carts = _cartRepository.GetCartItems(keyword);
             IEnumerable<CartModel> cartModels = carts.Select(c => new CartModel(c));
             return Ok(cartModels);
+        }
+
+        [HttpGet]
+        [Route("list2")]
+        public IActionResult GetCartItems2(int UserId)
+        {
+            var cartitem = _cartRepository.GetCartListAll(UserId);
+            ListResponse<CartModelResponse> listResponse = new ListResponse<CartModelResponse>()
+            {
+                Results = cartitem.Results.Select(c => new CartModelResponse(c)),
+                TotalRecords = cartitem.TotalRecords,
+            };
+            return Ok(listResponse);
         }
 
         [HttpPost]
@@ -53,8 +66,8 @@ namespace BookStore.Api.Controllers
                 Id = model.Id,
                 Quantity = model.Quantity,
                 Bookid = model.BookId,
-                Userid = model.UserId
-            };
+                Userid = model.UserId,
+        };
             cart = _cartRepository.UpdateCart(cart);
 
             return Ok(new CartModel(cart));
